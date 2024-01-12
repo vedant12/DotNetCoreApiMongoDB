@@ -65,13 +65,54 @@ namespace WebApiMongoDB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertRecord(InsertRecord request)
+        public async Task<IActionResult> InsertRecord(Record record)
         {
             InsertRecordResponse insertRecordResponse = new InsertRecordResponse();
 
             try
             {
-                insertRecordResponse = await _crudOperationDL.InsertRecord(request);
+                insertRecordResponse = await _crudOperationDL.InsertRecord(record);
+            }
+            catch (Exception ex)
+            {
+                insertRecordResponse.IsSuccess = false;
+                insertRecordResponse.Message = ex.Message;
+            }
+
+            return Ok(insertRecordResponse);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateRecord(Record record)
+        {
+            InsertRecordResponse insertRecordResponse = new InsertRecordResponse();
+
+            insertRecordResponse.IsSuccess = false;
+            insertRecordResponse.Message = "Record Updated";
+            try
+            {
+                insertRecordResponse = await _crudOperationDL.UpdateRecord(record);
+            }
+            catch (Exception ex)
+            {
+                insertRecordResponse.IsSuccess = false;
+                insertRecordResponse.Message = ex.Message;
+            }
+
+            return Ok(insertRecordResponse);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateSalaryById(Record record)
+        {
+            InsertRecordResponse insertRecordResponse = new InsertRecordResponse();
+
+            insertRecordResponse.IsSuccess = false;
+            insertRecordResponse.Message = "Record Updated";
+
+            try
+            {
+                insertRecordResponse = await _crudOperationDL.UpdateSalaryById(record);
             }
             catch (Exception ex)
             {
