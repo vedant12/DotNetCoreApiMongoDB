@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bvwLCeQo7NMct4Bgl2ZusdikD/7jbGiVoJTISphZ9sYsfe0R6zvG1hK1m3UGTg7TQGAPxhfmyoewM0A36vqxHg==",
+  "dgSpecHash": "9kqFon3dg/DKVn9d7txu/ihy9uWJYru/oQ+EeNsM++IU3nDv3PSuNXbh3yS1XP3zJYVCZEEuQuXf6kE0ns2QuQ==",
   "success": true,
-  "projectFilePath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
+  "projectFilePath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\DotNetCoreApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vmala\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\vmala\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

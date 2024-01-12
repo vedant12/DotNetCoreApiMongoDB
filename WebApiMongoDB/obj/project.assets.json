@@ -1213,11 +1213,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
+      "projectUniqueName": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\DotNetCoreApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
       "projectName": "WebApiMongoDB",
-      "projectPath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
+      "projectPath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\DotNetCoreApiMongoDB\\WebApiMongoDB\\WebApiMongoDB.csproj",
       "packagesPath": "C:\\Users\\vmala\\.nuget\\packages\\",
-      "outputPath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\WebApiMongoDB\\obj\\",
+      "outputPath": "C:\\Workspace\\.NET Core\\Web Apis\\WebApiMongoDB\\DotNetCoreApiMongoDB\\WebApiMongoDB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\vmala\\AppData\\Roaming\\NuGet\\NuGet.Config",
