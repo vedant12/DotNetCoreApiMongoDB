@@ -19,6 +19,7 @@ namespace WebApiMongoDB.DataAccessLayer
             _insertRecordsCollection = _mongoDatabase.GetCollection<Record>(_configuration["DatabaseSettings:CollectionName"]);
         }
 
+
         public async Task<InsertRecordResponse> GetRecordById(string id)
         {
             InsertRecordResponse response = new InsertRecordResponse();
@@ -27,6 +28,29 @@ namespace WebApiMongoDB.DataAccessLayer
             try
             {
                 response.Records = await _insertRecordsCollection.Find(x => x.Id == id).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error : " + ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<InsertRecordResponse> GetRecordsStartingWith(int? skip, int? limit, string name)
+        {
+            InsertRecordResponse response = new InsertRecordResponse();
+            response.IsSuccess = true;
+            response.Message = "Success";
+            try
+            {
+                if (skip != null && limit != null)
+                    response.Records = await _insertRecordsCollection.Find(x => true && x.FirstName.ToLower().StartsWith(name)).Skip(skip).Limit(limit).ToListAsync();
+                else
+                    response.Records = await _insertRecordsCollection.Find(x => true && x.FirstName.ToLower().StartsWith(name)).ToListAsync();
+
+                response.RecordsCount = response.Records.Count;
             }
             catch (Exception ex)
             {
@@ -55,18 +79,24 @@ namespace WebApiMongoDB.DataAccessLayer
             return response;
         }
 
-        public async Task<InsertRecordResponse> GetRecords()
+        public async Task<InsertRecordResponse> GetRecords(int? skip, int? limit)
         {
             InsertRecordResponse response = new InsertRecordResponse();
             response.IsSuccess = true;
             response.Message = "Success";
             try
             {
-                response.Records = await _insertRecordsCollection.Find(x => true).ToListAsync();
+                if(skip != null && limit != null)
+                    response.Records = await _insertRecordsCollection.Find(x => true).Skip(skip).Limit(limit).ToListAsync();
+                else
+                    response.Records = await _insertRecordsCollection.Find(x => true).ToListAsync();
+
                 if (response.Records.Count == 0)
                 {
                     response.Message = "No Record Found";
                 }
+
+                response.RecordsCount = response.Records.Count;
             }
             catch (Exception ex)
             {
@@ -86,6 +116,31 @@ namespace WebApiMongoDB.DataAccessLayer
                 record.CreatedDate = DateTime.Now.ToString();
                 record.UpdatedDate = string.Empty;
                 await _insertRecordsCollection.InsertOneAsync(record);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<InsertRecordResponse> InsertMultipleRecords(List<Record> records)
+        {
+            InsertRecordResponse response = new InsertRecordResponse();
+
+            try
+            {
+                records.ForEach(x =>
+                {
+                    x.CreatedDate = DateTime.Now.ToString();
+                    x.UpdatedDate = string.Empty;
+                });
+
+                await _insertRecordsCollection.InsertManyAsync(records);
+
+                response.RecordsCount = records.Count;
             }
             catch (Exception ex)
             {
@@ -150,5 +205,47 @@ namespace WebApiMongoDB.DataAccessLayer
 
             return response;
         }
+
+        public async Task<InsertRecordResponse> DeleteRecordById(Record record)
+        {
+            InsertRecordResponse response = new InsertRecordResponse();
+
+            try
+            {
+                var result = await _insertRecordsCollection.DeleteOneAsync(x => x.Id == record.Id);
+                if (!result.IsAcknowledged)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Deletion failed";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error - " + ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<InsertRecordResponse> DeleteRecordsLessThanAge(int age)
+        {
+            InsertRecordResponse response = new InsertRecordResponse();
+
+            try
+            {
+                var result = await _insertRecordsCollection.DeleteManyAsync(x => x.Age < age);
+
+                response.RecordsCount = Convert.ToInt32(result.DeletedCount);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error - " + ex.Message;
+            }
+
+            return response;
+        }
+
     }
 }

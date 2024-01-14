@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApiMongoDB.Models
 {
-    public class InsertRecord
+    public class Record
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -31,8 +31,9 @@ namespace WebApiMongoDB.Models
 
     public class InsertRecordResponse
     {
-        public List<InsertRecord> Records { get; set; }
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
+        public int? RecordsCount { get; set; }
+        public List<Record> Records { get; set; }
     }
 }
