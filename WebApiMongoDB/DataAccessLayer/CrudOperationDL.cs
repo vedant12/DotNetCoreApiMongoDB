@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using WebApiMongoDB.Models;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace WebApiMongoDB.DataAccessLayer
 {
@@ -19,14 +20,13 @@ namespace WebApiMongoDB.DataAccessLayer
             _insertRecordsCollection = _mongoDatabase.GetCollection<Record>(_configuration["DatabaseSettings:CollectionName"]);
         }
 
-
         public async Task<InsertRecordResponse> GetRecordById(string id)
         {
             InsertRecordResponse response = new InsertRecordResponse();
             response.IsSuccess = true;
             response.Message = "Success";
             try
-            {
+            {                
                 response.Records = await _insertRecordsCollection.Find(x => x.Id == id).ToListAsync();
             }
             catch (Exception ex)
@@ -69,6 +69,29 @@ namespace WebApiMongoDB.DataAccessLayer
             try
             {
                 response.Records = await _insertRecordsCollection.Find(x => x.FirstName == name).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Error : " + ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<InsertRecordResponse> GetRecordsByDepartment(int? skip, int? limit, string departmentName)
+        {
+            InsertRecordResponse response = new InsertRecordResponse();
+            response.IsSuccess = true;
+            response.Message = "Success";
+            try
+            {
+                if (skip != null && limit != null)
+                    response.Records = await _insertRecordsCollection.Find(x => x.Department.StartsWith(departmentName)).Skip(skip).Limit(limit).ToListAsync();
+                else
+                    response.Records = await _insertRecordsCollection.Find(x => x.Department.StartsWith(departmentName)).ToListAsync();
+
+                response.RecordsCount = response.Records.Count;
             }
             catch (Exception ex)
             {
@@ -167,6 +190,7 @@ namespace WebApiMongoDB.DataAccessLayer
                 dbRecord.Age = record.Age;
                 dbRecord.Contact = record.Contact;
                 dbRecord.Salary = record.Salary;
+                dbRecord.Department = record.Department;
 
                 var result = await _insertRecordsCollection.ReplaceOneAsync(x => x.Id == record.Id, dbRecord);
                 if (!result.IsAcknowledged)

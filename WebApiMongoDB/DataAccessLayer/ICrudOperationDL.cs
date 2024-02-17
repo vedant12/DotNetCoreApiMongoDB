@@ -4,11 +4,13 @@ namespace WebApiMongoDB.DataAccessLayer
 {
     public interface ICrudOperationDL
     {
-        public Task<InsertRecordResponse> InsertRecord(Record request);
+        public Task<InsertRecordResponse> InsertRecord(Record record);
 
         public Task<InsertRecordResponse> InsertMultipleRecords(List<Record> records);
 
         public Task<InsertRecordResponse> GetRecords(int? skip, int? limit);
+
+        public Task<InsertRecordResponse> GetRecordsByDepartment(int? skip, int? limit, string departmentName);
 
         public Task<InsertRecordResponse> GetRecordsStartingWith(int? skip, int? limit, string name);
 

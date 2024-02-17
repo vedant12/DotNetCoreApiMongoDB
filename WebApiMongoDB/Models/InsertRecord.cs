@@ -25,6 +25,7 @@ namespace WebApiMongoDB.Models
 
         [Required]
         public string Contact { get; set; }
+        public string Department { get; set; }
 
         public double Salary { get;set; }
     }

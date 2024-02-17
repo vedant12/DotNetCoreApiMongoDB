@@ -57,6 +57,26 @@ namespace WebApiMongoDB.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllRecordsByDepartment(int? skip, int? limit, string departmentName)
+        {
+            InsertRecordResponse insertRecordResponse = new InsertRecordResponse();
+            try
+            {
+                insertRecordResponse = await _crudOperationDL.GetRecordsByDepartment(skip, limit, departmentName);
+
+                insertRecordResponse.IsSuccess = true;
+                insertRecordResponse.RecordsCount = insertRecordResponse.Records.Count;
+                insertRecordResponse.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                insertRecordResponse.IsSuccess = false;
+                insertRecordResponse.Message = ex.Message;
+            }
+            return Ok(insertRecordResponse);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetRecordById(string id)
         {
             InsertRecordResponse insertRecordResponse = new InsertRecordResponse();
